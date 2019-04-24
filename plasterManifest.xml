@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plasterManifest
+  schemaVersion="1.1"
+  templateType="Project" xmlns="http://www.microsoft.com/schemas/PowerShell/Plaster/v1">
+
+  <!-- Plaster Template Metadata -->
+  <metadata>
+    <name>MyPSModuleTemplate</name>
+    <id>5a224439-3446-4814-a314-e17b36619db2</id>
+    <version>1.0.0</version>
+    <title>My PowerShell Module Project Template</title>
+    <description>Plaster template for a new PowerShell module project.</description>
+    <author>Chris Simmons</author>
+    <tags></tags>
+  </metadata>
+
+  <!-- Plaster Template Parameters -->
+  <parameters>
+    <parameter name='ModuleName'
+               type='text'
+               prompt='Enter the name of your new module'/>
+    <parameter name='Version'
+               type='text'
+               prompt='Enter the version number of your new module'
+               default='0.0.1'/>   
+    <parameter name='Author'
+               type='user-fullname'
+               prompt='Enter the name of the module author'/>
+  </parameters>
+
+  <!-- Project Content Creation -->
+  <content>
+
+    <!-- Initiation Message -->
+    <message>Scaffolding your new PowerShell module project...</message>
+
+    <!-- Module Manifest File -->
+    <newModuleManifest destination='src\${PLASTER_PARAM_ModuleName}.psd1'
+                       moduleVersion='$PLASTER_PARAM_Version'
+                       rootModule='${PLASTER_PARAM_ModuleName}.psm1'
+                       author='$PLASTER_PARAM_Author'
+                       encoding='UTF8-NoBOM'
+                       powerShellVersion='5.1'
+                       openInEditor="true"/>
+    
+    <!-- Module Source Files -->
+    <file source='src\Module.psm1'
+          destination='src\${PLASTER_PARAM_ModuleName}.psm1'/>
+    <file source='src\public\Add-YourFirstFunction.ps1'
+          destination='src\public\Add-YourFirstFunction.ps1'/>
+    <file source='src\private\Add-PrivateFunction.ps1'
+          destination='src\private\Add-PrivateFunction.ps1'/>
+
+    <!-- Build Automation Files -->
+    <templateFile source='build\Module.Build.ps1'
+                  destination='${PLASTER_PARAM_ModuleName}.Build.ps1'/>
+    
+    <!-- Editor Files -->
+    <file source='editor\tasks.json'
+          destination='.vscode\tasks.json'/>
+    <file source='editor\settings.json'
+          destination='.vscode\settings.json'/>
+
+    <!-- Project Meta Files -->
+    <file source='meta\.gitignore'
+          destination='.gitignore'/>
+    <file source='meta\.prettierignore'
+          destination='.prettierignore'/>
+    <file source='meta\LICENSE'
+          destination='LICENSE'/>
+    <templateFile source='meta\README.md'
+                  destination='README.md'/>
+
+    <!-- PSScriptAnalyzer Settings File -->
+    <file source='meta\PSScriptAnalyzerSettings.psd1'
+          destination='PSScriptAnalyzerSettings.psd1'/>
+
+    <!-- Pester Test Files -->
+    <templateFile source='tests\_InitializeTests.ps1'
+                  destination='tests\_InitializeTests.ps1'/>
+    <templateFile source='tests\Module.Manifest.Tests.ps1'
+                  destination='tests\${PLASTER_PARAM_ModuleName}.Manifest.Tests.ps1'/>
+    <templateFile source='tests\public\Add-YourFirstFunction.Tests.ps1'
+                  destination='tests\public\Add-YourFirstFunction.Tests.ps1'/>
+    <templateFile source='tests\private\Add-PrivateFunction.Tests.ps1'
+                  destination='tests\private\Add-PrivateFunction.Tests.ps1'/>
+    
+    <!-- Module Docs Source Files -->
+    <templateFile source='src\docs\en-US\about_Module.md'
+                  destination='src\docs\en-US\about_${PLASTER_PARAM_ModuleName}.md'/>
+    <templateFile source='src\docs\en-US\Add-YourFirstFunction.md'
+                  destination='src\docs\en-US\Add-YourFirstFunction.md'/>
+
+    <!-- Project Docs -->
+    <templateFile source=''
+                  destination='docs\'/>
+
+    <!-- Check Required Modules -->
+    <requireModule name="Pester"
+                   minimumVersion="4.7.3"
+                   message="Without Pester, you will not be able to run the provided Pester test to validate your module manifest file."/>
+    <requireModule name="InvokeBuild"
+                   minimumVersion="5.4.6"
+                   message="Without InvokeBuild, you will not be able to build/compile your project."/>
+    <requireModule name="platyPS"
+                   minimumVersion="0.13.0"
+                   message="Without platyPS, you will not be able to generate documentation."/>
+    <requireModule name="PSScriptAnalyzer"
+                   minimumVersion="1.18.0"
+                   message="Without PSScriptAnalyzer, you will not be able to analyse your code."/>
+
+    <!-- Completion Message -->
+    <message>Your new PowerShell module project '$PLASTER_PARAM_ModuleName' has been created!</message>
+
+  </content>
+
+</plasterManifest>
