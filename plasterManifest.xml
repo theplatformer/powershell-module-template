@@ -64,8 +64,6 @@
     <!-- Project Meta Files -->
     <file source='meta\.gitignore'
           destination='.gitignore'/>
-    <file source='meta\.prettierignore'
-          destination='.prettierignore'/>
     <file source='meta\LICENSE'
           destination='LICENSE'/>
     <templateFile source='meta\README.md'

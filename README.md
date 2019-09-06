@@ -69,7 +69,6 @@ MyNewModule
 |   |   MyNewModule.Manifest.Tests.ps1
 |
 |   .gitignore
-|   .prettierignore
 |   LICENSE
 |   MyNewModule.Build.ps1
 |   PSScriptAnalyzerSettings.psd1
@@ -113,7 +112,6 @@ Contains all Pester tests for the module.
 ### ***/***
 
 - *```.gitignore```* - Ignore file for Git.
-- *```.prettierignore```* - Ignore file for Prettier.
 - *```LICENSE```* - MIT license document.
 - *```MyNewModule.Build.ps1```* - Invoke-Build script, containing task definitions.
 - *```PSScriptAnalyzerSettings.psd1```* - Settings file for PSScriptAnalyzer.
