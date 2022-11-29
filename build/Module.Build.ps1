@@ -48,7 +48,9 @@ Add-BuildTask Test EnsurePester, {
 
 # Task for creating/cleaning the \build output directory.
 Add-BuildTask Clean {
-  $BuildDirectory = "$BuildRoot\build"  
+  $SourceDirectory = "$BuildRoot\src"
+  $Module = Get-ChildItem -Path $SourceDirectory -Filter *.psd1 -Recurse | Select-Object -First 1
+  $BuildDirectory = "$BuildRoot\build\$($Module.BaseName)" 
   if (!(Test-Path -Path $BuildDirectory)) {
     New-Item -ItemType Directory -Path $BuildDirectory -Force | Out-Null
   }
@@ -60,8 +62,8 @@ Add-BuildTask Clean {
 # Task for compiling all the individual function files into a single PSM1 module file.
 Add-BuildTask Compile {
   $SourceDirectory = "$BuildRoot\src"
-  $BuildDirectory = "$BuildRoot\build" 
   $Module = Get-ChildItem -Path $SourceDirectory -Filter *.psd1 -Recurse | Select-Object -First 1
+  $BuildDirectory = "$BuildRoot\build\$($Module.BaseName)" 
   $DestinationModule = "$BuildDirectory\$($Module.BaseName).psm1"
   $PublicFunctions = Get-ChildItem -Path $SourceDirectory -Include 'public' -Recurse -Directory | Get-ChildItem -Include *.ps1 -File
   $PrivateFunctions = Get-ChildItem -Path $SourceDirectory -Include 'private' -Recurse -Directory | Get-ChildItem -Include *.ps1 -File
@@ -92,8 +94,10 @@ Add-BuildTask Compile {
 
 # Task for generating PowerShell external help files from source markdown files, using platyPS.
 Add-BuildTask GenerateHelp EnsurePlatyPS, {
-  $DocsSource = "$BuildRoot\src\docs"
-  $BuildDirectory = "$BuildRoot\build" 
+  $SourceDirectory = "$BuildRoot\src"
+  $Module = Get-ChildItem -Path $SourceDirectory -Filter *.psd1 -Recurse | Select-Object -First 1
+  $BuildDirectory = "$BuildRoot\build\$($Module.BaseName)" 
+  $DocsSource = "$SourceDirectory\docs"
   $HelpLocales = (Get-ChildItem -Path $DocsSource -Directory).Name
 
   if ($HelpLocales) {
@@ -120,8 +124,9 @@ Add-BuildTask . Build
 
 # Task for publishing the built module to the PowerShell Gallery, which will also run a build.
 Add-BuildTask Publish Build, {
-  $BuildDirectory = "$BuildRoot\build"
-  $Module = Get-ChildItem -Path $BuildDirectory -Filter *.psd1 | Select-Object -First 1
+  $SourceDirectory = "$BuildRoot\src"
+  $Module = Get-ChildItem -Path $SourceDirectory -Filter *.psd1 -Recurse | Select-Object -First 1
+  $BuildDirectory = "$BuildRoot\build\$($Module.BaseName)" 
   $Manifest = Import-PowerShellDataFile -Path $Module.FullName
   $ModuleVersion = $Manifest.ModuleVersion
 
