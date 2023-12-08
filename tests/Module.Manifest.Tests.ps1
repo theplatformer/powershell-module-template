@@ -1,6 +1,8 @@
-. $PSScriptRoot\_InitializeTests.ps1
-
-$Manifest = Import-PowerShellDataFile -Path $ModuleManifestPath
+BeforeAll {
+  . $PSScriptRoot\_InitializeTests.ps1
+  $Manifest = Import-PowerShellDataFile -Path $ModuleManifestPath
+  Write-Verbose $Manifest
+}
 
 Describe "<%=$PLASTER_PARAM_ModuleName%> Module Manifest" {
   
